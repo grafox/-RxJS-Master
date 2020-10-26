@@ -1,35 +1,22 @@
 import './style.css';
 console.clear();
 // begin lesson code
-import { Subject } from 'rxjs'; 
-import { loadingService } from './loadingService';
 
-const loadingOverlay = document.getElementById('loading-overlay');
+import { Subject, interval } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-// const loading$ = new Subject();
+const observer = {
+  next: val => console.log('next', val),
+  error: err => console.log('error', err),
+  complete: () => console.log('complete')
+};
 
-// loading$.subscribe(isLoading => {
-//   if(isLoading) {    
-//     loadingOverlay.classList.add('open');    
-//   } else {    
-//     loadingOverlay.classList.remove('open')
-//   }
-// });
+const subject = new Subject();
+const interval$ = interval(2000).pipe(
+  tap(i => console.log('new interval', i))
+);
 
-// loading$.next(true);
+interval$.subscribe(subject);
 
-// setTimeout(() => loading$.next(false), 1500);
-
-
-loadingService.loadingStatus$.subscribe(isLoading => {
-  if(isLoading) {    
-    loadingOverlay.classList.add('open');    
-  } else {    
-    loadingOverlay.classList.remove('open')
-  }
-});
-
-loadingService.showLoading();
-
-setTimeout(() => loadingService.hideLoading(), 1500);
-
+const subscription = subject.subscribe(observer);
+const secondSubscription = subject.subscribe(observer);
