@@ -63,6 +63,7 @@ const sub = asyncScheduler.schedule(
  * operator. This is equivalent to wrapping your entire 
  * subscription in a scheduler.
  */
+
 of(1,2,3).pipe(
   tap(observer),
   subscribeOn(asyncScheduler, 2000)
